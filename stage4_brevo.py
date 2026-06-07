@@ -49,26 +49,28 @@ def send_outreach_emails(contacts):
             failed += 1
             continue
 
-        # Personalised email copy
         subject = f"Quick question for {first_name} — partnerships at {domain}"
 
         html_content = f"""
         <p>Hi {first_name},</p>
 
-        <p>I came across {domain} and was genuinely impressed by what you're building
-        in the payments space.</p>
+        <p>I noticed <strong>{domain}</strong> is doing incredible work in the payments space —
+        the scale and speed at which you're growing is hard to miss.</p>
 
-        <p>I'm reaching out because we help companies like yours automate their
-        outreach and lead generation — so your team can focus on closing deals
-        instead of finding them.</p>
+        <p>I'm reaching out because we work with fintech companies at similar
+        stages to help them automate their sales outreach — finding the right
+        prospects, personalising at scale, and booking more meetings without
+        adding headcount.</p>
 
-        <p>Would you be open to a quick 15-minute call this week to explore if
-        there's a fit? No pitch, just a conversation.</p>
+        <p>Most of our clients see a 3x increase in qualified pipeline within
+        the first 60 days.</p>
 
-        <p>Looking forward to hearing from you.</p>
+        <p>Would a 15-minute call this week make sense? I'd love to show you
+        exactly how it works — no commitment, just a conversation.</p>
 
         <p>Best,<br>
         {BREVO_SENDER_NAME}<br>
+        <a href="mailto:{BREVO_SENDER_EMAIL}">{BREVO_SENDER_EMAIL}</a>
         </p>
         """
 
@@ -101,11 +103,10 @@ def send_outreach_emails(contacts):
 
 
 if __name__ == "__main__":
-    # Test with dummy contacts
     test_contacts = [
         {
             "name": "Test User",
-            "email": "11249a112@kanchiuniv.ac.in",  # ← put YOUR email here to test
+            "email": "11249a112@kanchiuniv.ac.in",
             "title": "CEO",
             "domain": "razorpay.com"
         }

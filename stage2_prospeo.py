@@ -43,7 +43,6 @@ def enrich_person(person_id, linkedin_url):
             "person_id": person_id
         }
     }
-    # fallback to linkedin_url if no person_id
     if not person_id and linkedin_url:
         payload["data"] = {"linkedin_url": linkedin_url}
 
@@ -69,14 +68,14 @@ def find_decision_makers(domains):
 
             if search_data.get("error"):
                 print(f"    ⚠ Search error: {search_data.get('error_code')}")
-                time.sleep(2)
+                time.sleep(4)
                 continue
 
-            results = search_data.get("results", [])[:3]  # max 3 per company
+            results = search_data.get("results", [])[:3]
 
             if not results:
                 print(f"    ℹ No contacts found")
-                time.sleep(2)
+                time.sleep(4)
                 continue
 
             for item in results:
@@ -94,10 +93,9 @@ def find_decision_makers(domains):
                         break
 
                 print(f"    → Enriching {name}...")
-                time.sleep(1)
+                time.sleep(3)  # wait 3 seconds between enrich calls
 
                 try:
-                    # Step 2: Enrich to get email
                     enrich_data = enrich_person(person_id, linkedin_url)
 
                     if enrich_data.get("error"):
@@ -122,13 +120,13 @@ def find_decision_makers(domains):
 
                 except requests.exceptions.HTTPError as e:
                     print(f"      ✗ Enrich error: {e}")
-                    time.sleep(2)
+                    time.sleep(5)  # wait longer after error
 
-            time.sleep(2)
+            time.sleep(4)  # wait between companies
 
         except requests.exceptions.HTTPError as e:
             print(f"    ✗ HTTP Error: {e}")
-            time.sleep(3)
+            time.sleep(5)
         except Exception as e:
             print(f"    ✗ Error: {e}")
 
@@ -137,7 +135,7 @@ def find_decision_makers(domains):
 
 
 if __name__ == "__main__":
-    test_domains = ["razorpay.com", "cashfree.com"]
+    test_domains = ["razorpay.com", "cashfree.com", "adyen.com"]
     contacts = find_decision_makers(test_domains)
     for c in contacts:
         print(c)
